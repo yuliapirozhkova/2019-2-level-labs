@@ -4,14 +4,14 @@ Count frequencies dictionary by the given arbitrary text
 """
 import re
 def calculate_frequences(text: str):
-    text = text.lower()
+    # text = text.lower()
     list_text_all = re.split('[ "#\'\[\]!?:;,.\n\-...^*+~]', text)
     while '' in list_text_all: list_text_all.remove('')
     # print (list_text_all)
     list_text = []
     for i in range(len(list_text_all)):
         if list_text_all[i].isalpha() == True:
-            list_text.append(list_text_all[i])
+            list_text.append(list_text_all[i].lower())
     # print (list_text)
     list_freq = []
     for i in range(len(list_text)):
