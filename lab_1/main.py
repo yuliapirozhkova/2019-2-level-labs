@@ -3,7 +3,7 @@ Labour work #1
 Count frequencies dictionary by the given arbitrary text
 """
 import re
-def calculate_frequences(text: str):
+def calculate_frequences(text):
     text = text.lower()
     list_text_all = re.split('[ "#\'\[\]!?:;,.\n\-...^*+~]', text)
     while '' in list_text_all: list_text_all.remove('')
