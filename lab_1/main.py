@@ -8,10 +8,10 @@ def calculate_frequences(text: str) -> dict:
     """
     Calculates number of times each word appears in the text
     """
-    frequencies = {}
+    dictionary = {}
     new_text = ''
     if text is None:
-        return frequencies
+        return dictionary
     if not isinstance(text, str):
         text = str(text)
     for i in text:
@@ -21,12 +21,12 @@ def calculate_frequences(text: str) -> dict:
     words = new_text.split()
     for key in words:
         key = key.lower()
-        if key in frequencies:
-            value = frequencies[key]
-            frequencies[key] = value + 1
+        if key in dictionary:
+            value = dictionary[key]
+            dictionary[key] = value + 1
         else:
-            frequencies[key] = 1
-    return frequencies
+            dictionary[key] = 1
+    return dictionary
 
 
 def filter_stop_words(frequencies: dict, stop_words: tuple) -> dict:
