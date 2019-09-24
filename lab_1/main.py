@@ -22,6 +22,7 @@ def calculate_frequences(text: str) -> dict:
 
 def filter_stop_words(frequencies: dict, stop_words: tuple) -> dict:
     if frequencies is None:
+        frequencies = {}
         return frequencies
     for i in list(frequencies):
         if not isinstance(i, str):
@@ -38,6 +39,7 @@ def filter_stop_words(frequencies: dict, stop_words: tuple) -> dict:
 
 def get_top_n(frequencies: dict, top_n: int) -> tuple:
     if not isinstance(top_n, int):
+        frequencies = ()
         return frequencies
     if top_n < 0:
         top_n = 0
