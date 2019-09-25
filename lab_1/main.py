@@ -5,6 +5,9 @@ Count frequencies dictionary by the given arbitrary text
 import re
 
 def calculate_frequences(text):
+    """
+    Calculates number of times each word appears in the text
+    """
     if not isinstance(text, str):
         dictionary = {}
     else:
