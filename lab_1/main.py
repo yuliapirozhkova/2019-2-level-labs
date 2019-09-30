@@ -4,37 +4,52 @@ Count frequencies dictionary by the given arbitrary text
 """
 import re
 
-def calculate_frequences(text):
+
+def calculate_frequences(text) -> dict:
     """
     Calculates number of times each word appears in the text
     """
     if not isinstance(text, str):
-        dictionary = {}
+        dict_1 = {}
     else:
         list_text_all = re.split('[ "#\'\[\]!?:;,.\n\-^*+~]', text)
         while '' in list_text_all: list_text_all.remove('')
-        # print(list_text_all)
         list_text = []
         for i in range(len(list_text_all)):
             if list_text_all[i].isalpha():
                 list_text.append(list_text_all[i].lower())
-        # print(list_text)
         list_freq = []
         for i in range(len(list_text)):
             list_freq.append(list_text.count(list_text[i]))
-        # print(list_freq)
-        dictionary = {list_text[i]: list_freq[i] for i in range(len(list_text))}
-    return dictionary
+        dict_1 = {list_text[i]: list_freq[i] for i in range(len(list_text))}
+    return dict_1
 
-def filter_stop_words(frequencies: dict, stop_words: tuple) -> dict:
+
+def filter_stop_words(dict_2, tpl) -> dict:
     """
     Removes all stop words from the given frequencies dictionary
     """
-    pass
+    if isinstance(tpl, tuple) and isinstance(dict_2, dict):
+        for k in list(dict_2.keys()):
+            if k in tpl or isinstance(k, str) != 1:
+                del dict_2[k]
+    elif dict_2 is None:
+        dict_2 = {}
+    return dict_2
 
 
-def get_top_n(frequencies: dict, top_n: int) -> tuple:
+def get_top_n(dict_3, top_n) -> tuple:
     """
     Takes first N popular words
     """
-    pass
+    list_dict_3 = []
+    if isinstance(top_n, int) and top_n > 0:
+        for k in sorted(dict_3, key=dict_3.get, reverse=True):
+            if len(list_dict_3) != top_n:
+                list_dict_3.append(k)
+    return tuple(list_dict_3)
+
+
+
+
+
