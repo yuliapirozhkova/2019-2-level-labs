@@ -64,10 +64,7 @@ def get_top_n(frequencies: dict, top_n: int) -> tuple:
     Takes first N popular words
     """
     word_frequency_pare = list(frequencies.items())
-
-    def help_for_sorting(n_tuple):
-        return n_tuple[1]
-    word_frequency_pare.sort(key=help_for_sorting, reverse=True)
+    word_frequency_pare.sort(key=lambda n_tuple: n_tuple[1], reverse=True)
     gotten_top_n = ()
     if top_n > len(frequencies):
         top_n = len(frequencies)
@@ -107,7 +104,7 @@ If the implementation is hard to explain, it's a bad idea.
 If the implementation is easy to explain, it may be a good idea.
 Namespaces are one honking great idea -- let's do more of those!"""
 top_nn = 4
-stop_words_1 = ('tim', 'peters', 'by', 'beautiful', 6, '')
+stop_words_1 = ('tim', 'peters', 'by', 'beautiful', 6, '', 'if')
 
 frequencies = calculate_frequences(text_1)
 filter_stop_words(frequencies, stop_words_1)
