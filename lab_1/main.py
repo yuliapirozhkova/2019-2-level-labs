@@ -14,9 +14,9 @@ def calculate_frequences(text: str) -> dict:
         return frequencies
     if not isinstance(text, str):
         text = str(text)
-    for i in text:
-        if i.isalpha() or i == ' ':
-            new_text += i
+    for symbol in text:
+        if symbol.isalpha() or symbol == ' ':
+            new_text += symbol
     new_text = new_text.lower()
     words = new_text.split()
     for key in words:
@@ -36,16 +36,16 @@ def filter_stop_words(frequencies: dict, stop_words: tuple) -> dict:
     if frequencies is None:
         frequencies = {}
         return frequencies
-    for i in list(frequencies):
-        if not isinstance(i, str):
-            del frequencies[i]
+    for word in list(frequencies):
+        if not isinstance(word, str):
+            del frequencies[word]
     if not isinstance(stop_words, tuple):
         return frequencies
-    for i in stop_words:
-        if not isinstance(i, str):
+    for word in stop_words:
+        if not isinstance(word, str):
             continue
-        if frequencies.get(i) is not None:
-            del frequencies[i]
+        if frequencies.get(word) is not None:
+            del frequencies[word]
     return frequencies
 
 
@@ -82,3 +82,14 @@ def read_from_file(path_to_file: str, lines_limit: int) -> str:
             break
     file.close()
     return text
+
+
+def write_to_file(path_to_file: str, content: tuple):
+    """
+    Creates new file
+    """
+    file = open(path_to_file, 'w')
+    for i in content:
+        file.write(i)
+        file.write('\n')
+    file.close()
