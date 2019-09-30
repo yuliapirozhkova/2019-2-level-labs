@@ -12,15 +12,12 @@ def calculate_frequences(text) -> dict:
     if not isinstance(text, str):
         dict_1 = {}
     else:
-        list_text_all = re.split('[ "#\'\[\]!?:;,.\n\-^*+~]', text)
+        list_text_all = re.split('[ "#\'!?:;,.\n\-^*~]', text)
         while '' in list_text_all: list_text_all.remove('')
-        list_text = []
-        for i in range(len(list_text_all)):
-            if list_text_all[i].isalpha():
-                list_text.append(list_text_all[i].lower())
-        list_freq = []
-        for i in range(len(list_text)):
-            list_freq.append(list_text.count(list_text[i]))
+        list_text = [el.lower() for el in list_text_all if el.isalpha()]
+        print(list_text)
+        list_freq = [list_text.count(el) for el in list_text]
+        print(list_freq)
         dict_1 = {list_text[i]: list_freq[i] for i in range(len(list_text))}
     return dict_1
 
