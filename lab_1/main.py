@@ -106,6 +106,6 @@ Namespaces are one honking great idea -- let's do more of those!"""
 top_nn = 4
 stop_words_1 = ('tim', 'peters', 'by', 'beautiful', 6, '', 'if')
 
-frequencies = calculate_frequences(text_1)
-filter_stop_words(frequencies, stop_words_1)
-got_top_n = get_top_n(frequencies, top_nn)
+d_frequencies = calculate_frequences(text_1)
+d_filtered = filter_stop_words(frequencies, stop_words_1)
+got_top_n = get_top_n(d_filtered, top_nn)
