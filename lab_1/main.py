@@ -2,9 +2,9 @@
 Labour work #1
 Count frequencies dictionary by the given arbitrary text
 """
-text = ''
+tex1t = ''
 te5xt = 6
-tex6t = """
+text = """
 Nearly 60 million people live alone in China now. 
 As one of the fastest growing living arrangements in China, representing 14.0% of all Chinese family households in 2011, little is known about who they are, where they are, and what drive this increase.
 We takes a historical look at the temporal and spatial distribution trends of the one-person household based on 1982, 1990 and 2005 individual-level census data. 
@@ -12,24 +12,44 @@ We also conduct multi-level analysis to examine what contextual and individual c
 Results show that economic development and internal migration are crucial factors for the increasing prevalence. There is an increasing spatial heterogeneity in that these households cluster in economically developed areas. 
 Those who live along vary greatly by age, marital status, and socioeconomic status and are motivated by different socioeconomic and cultural factors quite different from the cultural individualism emphasized in the West.
 """
+stop_words = ('ourselves', 'hers', 'between', 'yourself', 'but', 'again', 'there', 'about',
+              'once', 'during', 'out', 'very', 'having', 'with', 'they', 'own', 'an', 'be',
+              'some', 'for', 'do', 'its', 'yours', 'such', 'into', 'of', 'most', 'itself',
+              'other', 'off', 'is', 's', 'am', 'or', 'who', 'as', 'from', 'him', 'each', 'the',
+              'themselves', 'until', 'below', 'are', 'we', 'these', 'your', 'his', 'through',
+              'don', 'nor', 'me', 'were', 'her', 'more', 'himself', 'this', 'down', 'should',
+              'our', 'their', 'while', 'above', 'both', 'up', 'to', 'ours', 'had', 'she', 'all',
+              'no', 'when', 'at', 'any', 'before', 'them', 'same', 'and', 'been', 'have', 'in',
+              'will', 'on', 'does', 'yourselves', 'then', 'that', 'because', 'what', 'over',
+              'why', 'so', 'can', 'did', 'not', 'now', 'under', 'he', 'you', 'herself', 'has',
+              'just', 'where', 'too', 'only', 'myself', 'which', 'those', 'i', 'after', 'few',
+              'whom', 't', 'being', 'if', 'theirs', 'my', 'against', 'a', 'by', 'doing',
+              'it', 'how', 'further', 'was', 'here', 'than', 'from', 'by')
+
 
 def calculate_frequences(text):
+
     prohibited_marks = ['.', '-', ':', '\n', '%', "’s", ',', "'", '*', '~', '^', ';', '"', '@', '$', '%', '*', '&', '^',
                         '%', '$']
-    stop_words = ['the', 'a', 'on', 'in', 'up', 'out', 'as', 'of', 'all']
 
     if text is None:
         print('none given')
+        frequencies = {}
+        return frequencies
     else:
         if type(text) is int:
             print('error. string is type int')
+            frequencies = {}
+            return frequencies
         else:
             if len(text) == 0:
                 print('error. empty string')
+                frequencies = {}
+                return frequencies
             else:
                 text_changed = text.lower()
                 text_after_split = text_changed.split(' ')
-                print(text_after_split)
+                # print(text_after_split)
                 result = []
                 frequencies = {}
                 for word in text_after_split:
@@ -40,7 +60,7 @@ def calculate_frequences(text):
                                 clear_word += el
                         if clear_word is not '':
                             result.append(clear_word)
-                print(result)
+                # print(result)
                 a = result
                 for part in a:
                     count = frequencies.get(part, 0)
@@ -48,11 +68,22 @@ def calculate_frequences(text):
                 frequencies_list = frequencies.keys()
                 for parts in frequencies_list:
                     print(parts, frequencies[parts])
-                print(frequencies)
+                # print(frequencies)
                 return frequencies
 
 
-#def filter_stop_words(frequencies, stop_words):
+def filter_stop_words(frequencies, stop_words):
+    frequencies_new = frequencies.copy()
+    if stop_words is None or frequencies is None:
+        print('error!')
+        return {}
+    for key in list(frequencies_new):
+        if str(key).isdigit or key in stop_words:
+            frequencies_new.pop(key)
+            continue
+    # print (frequencies)
+    return frequencies_new
+
 
 
 #  """
@@ -60,9 +91,10 @@ def calculate_frequences(text):
 #  """
 #  pass
 
-#get_only_words(text)
+# get_only_words(text)
 
 calculate_frequences(text)
+filter_stop_words(frequencies, stop_words)
 # prohibited_marks = ['.', '-', ':', '\n', '%', "’s", ',', "'", '*', '~', '^', ';', '"', '@', '$', '%', '*', '&', '^%$']
 # frequencies = {}
 # text_changed = text.lower()
