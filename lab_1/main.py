@@ -15,10 +15,7 @@ def calculate_frequences(text) -> dict:
         list_text_all = re.split('[ "#\'!?:;,.\n\-^*~]', text)
         while '' in list_text_all: list_text_all.remove('')
         list_text = [el.lower() for el in list_text_all if el.isalpha()]
-        print(list_text)
-        list_freq = [list_text.count(el) for el in list_text]
-        print(list_freq)
-        dict_1 = {list_text[i]: list_freq[i] for i in range(len(list_text))}
+        dict_1 = {el: list_text.count(el) for el in list_text}
     return dict_1
 
 
@@ -45,6 +42,9 @@ def get_top_n(dict_3, top_n) -> tuple:
             if len(list_dict_3) != top_n:
                 list_dict_3.append(k)
     return tuple(list_dict_3)
+
+
+
 
 
 
