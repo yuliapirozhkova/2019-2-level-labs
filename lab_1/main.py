@@ -44,6 +44,28 @@ def get_top_n(dict_3, top_n) -> tuple:
     return tuple(list_dict_3)
 
 
+def read_from_file(path_to_file, lines_limit):
+    f = open(path_to_file)
+    text = ''
+    lines_count = 0
+    for line in f:
+        text += line
+        lines_count += 1
+        if lines_count == lines_limit:
+            break
+    f.close()
+    return text
+
+
+def write_to_file(path_to_file, content):
+    f = open(path_to_file, 'w')
+    for word in content:
+        f.write(word+'\n')
+    f.close()
+
+
+
+
 
 
 
