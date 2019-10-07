@@ -1,10 +1,4 @@
-"""
-Labour work #1
-Count frequencies dictionary by the given arbitrary text
-"""
-import textwrap
-
-text_one_string = """
+text = """
    Nearly 60 million people live alone in China now. 
    As one of the fastest growing living arrangements in China, representing 14.0% of all Chinese family households in 2011, little is known about who they are, where they are, and what drive this increase.
    We takes a historical look at the temporal and spatial distribution trends of the one-person household based on 1982, 1990 and 2005 individual-level census data. 
@@ -12,7 +6,6 @@ text_one_string = """
    Results show that economic development and internal migration are crucial factors for the increasing prevalence. There is an increasing spatial heterogeneity in that these households cluster in economically developed areas. 
    Those who live along vary greatly by age, marital status, and socioeconomic status and are motivated by different socioeconomic and cultural factors quite different from the cultural individualism emphasized in the West.
    """
-text = textwrap.fill(text_one_string, width=120)
 stop_words = ('ourselves', 'hers', 'between', 'yourself', 'but', 'again', 'there', 'about',
               'once', 'during', 'out', 'very', 'having', 'with', 'they', 'own', 'an', 'be',
               'some', 'for', 'do', 'its', 'yours', 'such', 'into', 'of', 'most', 'itself',
@@ -29,57 +22,44 @@ stop_words = ('ourselves', 'hers', 'between', 'yourself', 'but', 'again', 'there
 
 
 def calculate_frequences(text):
-    # """
-    # Calculates number of times each word appears in the text
-    # """
+
     prohibited_marks = ['.', '-', ':', '\n', '%', "’s", ',', "'", '*', '~', '^', ';', '"', '@', '$', '%', '*', '&', '^',
                         '%', '$']
     if text is None:
         print('none given')
         frequencies = {}
         return frequencies
-    else:
-        if type(text) is int:
-            print('error. string is type int')
-            frequencies = {}
-            return frequencies
-        else:
-            if len(text) == 0:
-                print('error. empty string')
-                frequencies = {}
-                return frequencies
-            else:
-                text_changed = text.lower()
-                text_after_split = text_changed.split(' ')
-                result = []
-                frequencies = {}
-                for word in text_after_split:
-                    if not word.isdigit() and word not in prohibited_marks:
-                        clear_word = ''
-                        for el in word:
-                            if el not in prohibited_marks and not el.isdigit():
-                                clear_word += el
-                        if clear_word is not '':
-                            result.append(clear_word)
-                a = result
-                for part in a:
-                    count = frequencies.get(part, 0)
-                    frequencies[part] = count + 1
-                # frequencies_list = frequencies.keys()
-                # for parts in frequencies_list:
-                    # print(parts, frequencies[parts])
-                # print(frequencies)
-                return frequencies
+    if type(text) is int:
+        print('error. string is type int')
+        frequencies = {}
+        return frequencies
+    if len(text) == 0:
+        print('error. empty string')
+        frequencies = {}
+        return frequencies
+    text_changed = text.lower()
+    text_after_split = text_changed.split(' ')
+    result = []
+    frequencies = {}
+    for word in text_after_split:
+        if not word.isdigit() and word not in prohibited_marks:
+            clear_word = ''
+            for el in word:
+                if el not in prohibited_marks and not el.isdigit():
+                    clear_word += el
+            if clear_word is not '':
+                result.append(clear_word)
+    for part in result:
+        count = frequencies.get(part, 0)
+        frequencies[part] = count + 1
+    return frequencies
 
 
 def filter_stop_words(frequencies, stop_words):
-    #  """
-    #  Removes all stop words from the given frequencies dictionary
-    #  """
+
     if stop_words is None or frequencies is None or len(frequencies) == 0:
         print('error!')
         return {}
-
     if type(frequencies) is not dict:
         return {}
     else:
@@ -95,10 +75,8 @@ def filter_stop_words(frequencies, stop_words):
     return frequencies_new
 
 
-def get_top_n(frequencies_new: dict, top_n: int) -> tuple:
-    # """
-    #  Takes first N popular words
-    # """
+def get_top_n(frequencies_new, top_n):
+
     if frequencies_new == {} or top_n < 0 or top_n == 0:
         return ()
     list_of_top_words = []
