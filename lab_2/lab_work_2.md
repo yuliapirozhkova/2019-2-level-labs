@@ -202,3 +202,8 @@ def describe_edits(edit_matrix: tuple,
                   substitute_weight: int) -> list:
   pass
 ```
+
+### Литература для пытливых умов
+
+1. [Ссылка на бессмертную Википедию](https://ru.wikipedia.org/wiki/%D0%A0%D0%B0%D1%81%D1%81%D1%82%D0%BE%D1%8F%D0%BD%D0%B8%D0%B5_%D0%9B%D0%B5%D0%B2%D0%B5%D0%BD%D1%88%D1%82%D0%B5%D0%B9%D0%BD%D0%B0)
+2. [Глава в книге Журавского](https://web.stanford.edu/~jurafsky/slp3/2.pdf)
