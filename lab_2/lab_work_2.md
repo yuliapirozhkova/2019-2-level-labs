@@ -16,7 +16,7 @@
 >
 > Вопрос: какие операции и в каком порядке надо проделать над словом `length`, чтобы
 > получить слово `kitchen`, если в списке доступных операций только добавление, удаление
-> и замена символов.
+> и замена символов?
 
 ## Что надо сделать
 
@@ -61,7 +61,7 @@ def generate_edit_matrix(num_rows: int, num_cols: int) -> list:
 
 Правила инициализации матрицы:
 
-* заполнение первого стобца матрицы
+* заполнение первого столбца матрицы
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}&space;\right.M[0][0]&space;=&space;0&space;\\&space;M[i][0]&space;=&space;M[i-1][0]&space;&plus;&space;remove\_weight&space;\end{cases}" title="\begin{cases} \right.M[0][0] = 0 \\ M[i][0] = M[i-1][0] + remove\_weight \end{cases}" />
 * заполнение первой строки матрицы
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}&space;\right.M[0][0]&space;=&space;0&space;\\&space;M[0][j]&space;=&space;M[0][j-1]&space;&plus;&space;insert\_weight&space;\end{cases}" title="\begin{cases} \right.M[0][0] = 0 \\ M[0][j] = M[0][j-1] + insert\_weight \end{cases}" />
@@ -113,9 +113,9 @@ def fill_edit_matrix(edit_matrix: tuple,
 |**#**|    0|    1|    2|    3|    4|    5|    6|    7|
 |**l**|    1|    2|    3|    4|    5|    6|    7|    8|
 |**e**|    2|    3|    4|    5|    6|    7|    6|    7|
-|**n**|    3|    4|    5|    6|    7|    8|    9|    6|
-|**g**|    4|    5|    6|    7|    8|    9|   10|   11|
-|**t**|    5|    6|    7|    6|    7|    8|    9|   10|
+|**n**|    3|    4|    5|    6|    7|    8|    7|    6|
+|**g**|    4|    5|    6|    7|    8|    9|    8|    7|
+|**t**|    5|    6|    7|    6|    7|    8|    9|    8|
 |**h**|    6|    7|    8|    7|    8|    7|    8|**9**|
 
 > Символ # обозначает пустую строку
