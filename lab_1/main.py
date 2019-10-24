@@ -9,66 +9,89 @@ def calculate_frequences(text) -> dict:
     """
     Calculates number of times each word appears in the text
     """
+    frequencies = {}
+    new_text = ''
+    if text is None:
+        return frequencies
     if not isinstance(text, str):
-        dict_1 = {}
-    else:
-        list_text_all = re.split('[ "#\'!?:;,.\n\-^*~]', text)
-        while '' in list_text_all: list_text_all.remove('')
-        list_text = [el.lower() for el in list_text_all if el.isalpha()]
-        dict_1 = {el: list_text.count(el) for el in list_text}
-    return dict_1
+        text = str(text)
+    for symbol in text:
+        if symbol.isalpha() or symbol == ' ':
+            new_text += symbol
+    new_text = new_text.lower()
+    words = new_text.split()
+    for key in words:
+        key = key.lower()
+        if key in frequencies:
+            value = frequencies[key]
+            frequencies[key] = value + 1
+        else:
+            frequencies[key] = 1
+    return frequencies
+
 
 
 def filter_stop_words(dict_2, tpl) -> dict:
     """
     Removes all stop words from the given frequencies dictionary
     """
-    if isinstance(tpl, tuple) and isinstance(dict_2, dict):
-        for k in list(dict_2.keys()):
-            if k in tpl or isinstance(k, str) != 1:
-                del dict_2[k]
-    elif dict_2 is None:
-        dict_2 = {}
-    return dict_2
+    if frequencies is None:
+        frequencies = {}
+        return frequencies
+    for word in list(frequencies):
+        if not isinstance(word, str):
+            del frequencies[word]
+    if not isinstance(stop_words, tuple):
+        return frequencies
+    for word in stop_words:
+        if not isinstance(word, str):
+            continue
+        if frequencies.get(word) is not None:
+            del frequencies[word]
+    return frequencies
 
 
 def get_top_n(dict_3, top_n) -> tuple:
     """
     Takes first N popular words
+    :param
     """
-    list_dict_3 = []
-    if isinstance(top_n, int) and top_n > 0:
-        for k in sorted(dict_3, key=dict_3.get, reverse=True):
-            if len(list_dict_3) != top_n:
-                list_dict_3.append(k)
-    return tuple(list_dict_3)
+    if not isinstance(top_n, int):
+        frequencies = ()
+        return frequencies
+    if top_n < 0:
+        top_n = 0
+    elif top_n > len(frequencies):
+        top_n = len(frequencies)
+    top_words = sorted(frequencies, key=lambda x: int(frequencies[x]), reverse=True)
+    best = tuple(top_words[:top_n])
+    return best
 
 
-def read_from_file(path_to_file, lines_limit):
-    f = open(path_to_file)
+def read_from_file(path_to_file: str, lines_limit: int) -> str:
+    """
+    Read text from file
+    """
+    file = open(path_to_file)
+    counter = 0
     text = ''
-    lines_count = 0
-    for line in f:
+    if file is None:
+        return text
+    for line in file:
         text += line
-        lines_count += 1
-        if lines_count == lines_limit:
+        counter += 1
+        if counter == lines_limit:
             break
-    f.close()
+    file.close()
     return text
 
 
-def write_to_file(path_to_file, content):
-    f = open(path_to_file, 'w')
-    for word in content:
-        f.write(word+'\n')
-    f.close()
-
-
-
-
-
-
-
-
-
-
+def write_to_file(path_to_file: str, content: tuple):
+    """
+    Creates new file
+    """
+    file = open(path_to_file, 'w')
+    for i in content:
+        file.write(i)
+        file.write('\n')
+    file.close()
