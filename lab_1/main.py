@@ -1,92 +1,95 @@
-text = """
-   Nearly 60 million people live alone in China now. 
-   As one of the fastest growing living arrangements in China, representing 14.0% of all Chinese family households in 2011, little is known about who they are, where they are, and what drive this increase.
-   We takes a historical look at the temporal and spatial distribution trends of the one-person household based on 1982, 1990 and 2005 individual-level census data. 
-   We also conduct multi-level analysis to examine what contextual and individual characteristics contribute to an individual’s propensity to live alone. 
-   Results show that economic development and internal migration are crucial factors for the increasing prevalence. There is an increasing spatial heterogeneity in that these households cluster in economically developed areas. 
-   Those who live along vary greatly by age, marital status, and socioeconomic status and are motivated by different socioeconomic and cultural factors quite different from the cultural individualism emphasized in the West.
-   """
-stop_words = ('ourselves', 'hers', 'between', 'yourself', 'but', 'again', 'there', 'about',
-              'once', 'during', 'out', 'very', 'having', 'with', 'they', 'own', 'an', 'be',
-              'some', 'for', 'do', 'its', 'yours', 'such', 'into', 'of', 'most', 'itself',
-              'other', 'off', 'is', 's', 'am', 'or', 'who', 'as', 'from', 'him', 'each', 'the',
-              'themselves', 'until', 'below', 'are', 'we', 'these', 'your', 'his', 'through',
-              'don', 'nor', 'me', 'were', 'her', 'more', 'himself', 'this', 'down', 'should',
-              'our', 'their', 'while', 'above', 'both', 'up', 'to', 'ours', 'had', 'she', 'all',
-              'no', 'when', 'at', 'any', 'before', 'them', 'same', 'and', 'been', 'have', 'in',
-              'will', 'on', 'does', 'yourselves', 'then', 'that', 'because', 'what', 'over',
-              'why', 'so', 'can', 'did', 'not', 'now', 'under', 'he', 'you', 'herself', 'has',
-              'just', 'where', 'too', 'only', 'myself', 'which', 'those', 'i', 'after', 'few',
-              'whom', 't', 'being', 'if', 'theirs', 'my', 'against', 'a', 'by', 'doing',
-              'it', 'how', 'further', 'was', 'here', 'than', 'from', 'by', 'alone')
+"""
+Labour work #1
+Count frequencies dictionary by the given arbitrary text
+"""
 
 
-def calculate_frequences(text):
-
-    prohibited_marks = ['.', '-', ':', '\n', '%', "’s", ',', "'", '*', '~', '^', ';', '"', '@', '$', '%', '*', '&', '^',
-                        '%', '$']
-    if text is None:
-        print('none given')
-        frequencies = {}
-        return frequencies
-    if type(text) is int:
-        print('error. string is type int')
-        frequencies = {}
-        return frequencies
-    if len(text) == 0:
-        print('error. empty string')
-        frequencies = {}
-        return frequencies
-    text_changed = text.lower()
-    text_after_split = text_changed.split(' ')
-    result = []
+def calculate_frequences(text: str) -> dict:
+    """
+    Calculates number of times each word appears in the text
+    """
     frequencies = {}
-    for word in text_after_split:
-        if not word.isdigit() and word not in prohibited_marks:
-            clear_word = ''
-            for el in word:
-                if el not in prohibited_marks and not el.isdigit():
-                    clear_word += el
-            if clear_word is not '':
-                result.append(clear_word)
-    for part in result:
-        count = frequencies.get(part, 0)
-        frequencies[part] = count + 1
+    new_text = ''
+    if text is None:
+        return frequencies
+    if not isinstance(text, str):
+        text = str(text)
+    for symbol in text:
+        if symbol.isalpha() or symbol == ' ':
+            new_text += symbol
+    new_text = new_text.lower()
+    words = new_text.split()
+    for key in words:
+        key = key.lower()
+        if key in frequencies:
+            value = frequencies[key]
+            frequencies[key] = value + 1
+        else:
+            frequencies[key] = 1
     return frequencies
 
 
-def filter_stop_words(frequencies, stop_words):
+def filter_stop_words(frequencies: dict, stop_words: tuple) -> dict:
+    """
+    Removes all stop words from the given frequencies dictionary
+    """
+    if frequencies is None:
+        frequencies = {}
+        return frequencies
+    for word in list(frequencies):
+        if not isinstance(word, str):
+            del frequencies[word]
+    if not isinstance(stop_words, tuple):
+        return frequencies
+    for word in stop_words:
+        if not isinstance(word, str):
+            continue
+        if frequencies.get(word) is not None:
+            del frequencies[word]
+    return frequencies
 
-    if stop_words is None or frequencies is None or len(frequencies) == 0:
-        print('error!')
-        return {}
-    if type(frequencies) is not dict:
-        return {}
-    else:
-        frequencies_new = frequencies.copy()
-        for stop_word in stop_words:
-            if isinstance(stop_word, str) and len(stop_word) > 0:
-                if frequencies_new.get(stop_word):
-                    frequencies_new.pop(stop_word)
-        for key in frequencies_new:
-            if key in stop_words or isinstance(key, int):
-                frequencies_new.pop(key)
-                return frequencies_new
-    return frequencies_new
+
+def get_top_n(frequencies: dict, top_n: int) -> tuple:
+    """
+    Takes first N popular words
+    :param
+    """
+    if not isinstance(top_n, int):
+        frequencies = ()
+        return frequencies
+    if top_n < 0:
+        top_n = 0
+    elif top_n > len(frequencies):
+        top_n = len(frequencies)
+    top_words = sorted(frequencies, key=lambda x: int(frequencies[x]), reverse=True)
+    best = tuple(top_words[:top_n])
+    return best
 
 
-def get_top_n(frequencies_new, top_n):
-
-    if frequencies_new == {} or top_n < 0 or top_n == 0:
-        return ()
-    list_of_top_words = []
-    ii = 0
-    for n in frequencies_new:
-        if ii == top_n:
+def read_from_file(path_to_file: str, lines_limit: int) -> str:
+    """
+    Read text from file
+    """
+    file = open(path_to_file)
+    counter = 0
+    text = ''
+    if file is None:
+        return text
+    for line in file:
+        text += line
+        counter += 1
+        if counter == lines_limit:
             break
-        list_of_top_words = sorted(frequencies_new, key=lambda n: frequencies_new[n], reverse=True)
-        ii += 1
-    print(list_of_top_words)
-    final_frequencies_tuple = tuple(list_of_top_words[:top_n])
-    print(final_frequencies_tuple)
-    return final_frequencies_tuple
+    file.close()
+    return text
+
+
+def write_to_file(path_to_file: str, content: tuple):
+    """
+    Creates new file
+    """
+    file = open(path_to_file, 'w')
+    for i in content:
+        file.write(i)
+        file.write('\n')
+    file.close()
