@@ -71,33 +71,30 @@ def find_distance(original_word: str,
     initialized_matrix = initialize_edit_matrix(tuple(edit_matrix), add_weight, remove_weight)
     full_matrix = fill_edit_matrix(tuple(initialized_matrix), add_weight, remove_weight, substitute_weight,
                                    original_word, target_word)
-    distance = full_matrix[-1][-1]
-    return distance
+    return full_matrix[-1][-1]
 
 
 def save_to_csv(edit_matrix: list, path_to_file: str) -> None:
     if not isinstance(edit_matrix, list) or not isinstance(path_to_file, str):
         return None
-    f = open(path_to_file, "a")
-    for m, el in enumerate(edit_matrix):
-        for n, i in enumerate(el):
-            f.write(str(i))
-            if n != len(el) - 1:
-                f.write(',')
-        if m != len(edit_matrix) - 1:
-            f.write('\n')
-    f.close()
+    with open(path_to_file, "w") as f:
+        for m, el in enumerate(edit_matrix):
+            for n, i in enumerate(el):
+                f.write(str(i))
+                if n != len(el) - 1:
+                    f.write(',')
+            if m != len(edit_matrix) - 1:
+                f.write('\n')
 
 
 def load_from_csv(path_to_file: str) -> list:
     if not isinstance(path_to_file, str):
         return []
-    f = open(path_to_file)
-    matrix_from_file = f.readlines()
-    matrix = []
-    for el in matrix_from_file:
-        el = el.replace('\n', '')
-        to_add = el.split(',')
-        matrix.append(to_add)
-    f.close()
+    with open(path_to_file) as f:
+        matrix_from_file = f.readlines()
+        matrix = []
+        for el in matrix_from_file:
+            el = el.replace('\n', '')
+            to_add = el.split(',')
+            matrix.append(to_add)
     return matrix
