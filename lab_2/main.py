@@ -98,3 +98,51 @@ def load_from_csv(path_to_file: str) -> list:
             to_add = el.split(',')
             matrix.append(to_add)
     return matrix
+
+
+def search_for_path(matrix: list, ind_1: int, ind_2: int, n=0) -> int:
+    if ind_1 >= len(matrix) - 1 or ind_2 >= len(matrix[0]) - 1:
+        return n
+    if matrix[ind_1][ind_2] == matrix[ind_1 + 1][ind_2 + 1]:
+        n = search_for_path(matrix, ind_1 + 1, ind_2 + 1, n + 1)
+    return n
+
+
+def describe_edits(edit_matrix: tuple, original_word: str, target_word: str, add_weight: int, remove_weight: int,
+                   substitute_weight: int) -> list:
+    edits = []
+    edit_matrix = list(edit_matrix)
+    distance = find_distance(original_word, target_word, add_weight, remove_weight, substitute_weight)
+    row = 0
+    col = 0
+    for i in range(distance):
+        var_1 = search_for_path(edit_matrix, row, col + 1)
+        var_2 = search_for_path(edit_matrix, row + 1, col)
+        if var_1 == var_2:
+            if (not edits or 'insert' in edits[-1]) and row != len(edit_matrix) - 1:
+                edits.append('remove ' + original_word[row])
+                row += 1
+            elif col != len(edit_matrix[0]) - 1:
+                edits.append('insert ' + target_word[col])
+                col += 1
+        elif var_1 > var_2:
+            edits.append([])
+            edits.append('insert ' + target_word[col])
+            col += var_1 + 1
+            row += var_1
+        else:
+            edits.append([])
+            edits.append('remove ' + original_word[row])
+            row += var_2 + 1
+            col += var_2
+    edits_with_sub = []
+    flag = 1
+    for i in range(len(edits)):
+        if i != len(edits) - 1 and 'remove' in edits[i] and 'insert' in edits[i + 1]:
+            edits_with_sub.append('substitute {} with {}'.format(edits[i][-1], edits[i + 1][-1]))
+            flag = 0
+        elif not flag:
+            flag = 1
+        elif edits[i]:
+            edits_with_sub.append(edits[i])
+    return edits_with_sub
