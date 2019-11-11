@@ -93,5 +93,7 @@ def load_from_csv(path_to_file: str) -> list:
         matrix.append(row)
         row = []
     file_csv.close()
+    return matrix
+
 
 
