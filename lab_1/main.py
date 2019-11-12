@@ -5,7 +5,7 @@ Count frequencies dictionary by the given arbitrary text
 import re
 
 
-def calculate_frequences(text) -> dict:
+def calculate_frequences(text: str) -> dict:
     """
     Calculates number of times each word appears in the text
     """
@@ -31,7 +31,7 @@ def calculate_frequences(text) -> dict:
 
 
 
-def filter_stop_words(dict_2, tpl) -> dict:
+def filter_stop_words(frequencies : dict, stop_words: tuple) -> dict:
     """
     Removes all stop words from the given frequencies dictionary
     """
@@ -51,7 +51,7 @@ def filter_stop_words(dict_2, tpl) -> dict:
     return frequencies
 
 
-def get_top_n(dict_3, top_n) -> tuple:
+def get_top_n(frequencies: dict, top_n: int) -> tuple:
     """
     Takes first N popular words
     :param
