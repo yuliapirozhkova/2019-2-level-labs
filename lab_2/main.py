@@ -122,7 +122,7 @@ def describe_edits(edit_matrix: tuple,
                 i += 1
                 j += 1
             elif substitute == min(remove, insert, substitute) and original_word[k] == target_word[n]:
-                d = ''
+                desc = ''
                 j += 1
                 n += 1
             elif insert == min(remove, insert, substitute) and insert != remove or original_word[k] in target_word:
