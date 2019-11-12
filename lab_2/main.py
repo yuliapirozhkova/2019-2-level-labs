@@ -6,25 +6,25 @@ Labour work #2. Levenshtein distance.
 def generate_edit_matrix(num_rows: int, num_cols: int) -> list:
     if isinstance(num_rows, int) and isinstance(num_cols, int):
         number = 0
-        edit_matrix = []
-        for i in range(num_rows):
-            edit_matrix.append([])
-            for j in range(num_cols):
-                edit_matrix[i].append(number)
-        print(edit_matrix)
-        return edit_matrix
+        f_matrix = []
+        for _ in range(num_rows):
+            for_count = []
+            for _ in range(num_cols):
+                for_count.append(number)
+            f_matrix.append(for_count)
+        return f_matrix
     return []
 
 
 def initialize_edit_matrix(edit_matrix: tuple, add_weight: int, remove_weight: int) -> list:
     matrix = list(edit_matrix)
     if matrix and isinstance(add_weight, int) and isinstance(remove_weight, int):
-        if len(matrix[0]) > 0:
-            for i in range(1, len(matrix[0])):
-                matrix[0][i] = matrix[0][i - 1] + add_weight
+        length = len(matrix[0])
+        if length:
             for i in range(1, len(matrix)):
                 matrix[i][0] = matrix[i - 1][0] + remove_weight
-            print(matrix)
+            for j in range(1, len(matrix[0])):
+                matrix[0][j] = matrix[0][j - 1] + add_weight
     return list(matrix)
 
 
@@ -93,6 +93,6 @@ def load_from_csv(path_to_file: str) -> list:
         with open(path_to_file) as file:
             first_matrix = []
             var = file.read().split('\n')[:-1]
-            for r in var:
-                first_matrix.append(r.split(','))
+            for row in var:
+                first_matrix.append(row.split(','))
         return first_matrix
