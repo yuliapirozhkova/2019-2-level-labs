@@ -2,7 +2,6 @@
 Labour work #1
 Count frequencies dictionary by the given arbitrary text
 """
-import re
 
 
 def calculate_frequences(text: str) -> dict:
@@ -30,8 +29,7 @@ def calculate_frequences(text: str) -> dict:
     return frequencies
 
 
-
-def filter_stop_words(frequencies : dict, stop_words: tuple) -> dict:
+def filter_stop_words(frequencies: dict, stop_words: tuple) -> dict:
     """
     Removes all stop words from the given frequencies dictionary
     """

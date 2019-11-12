@@ -8,23 +8,21 @@ def generate_edit_matrix(num_rows: int, num_cols: int) -> list:
     matrix: List[List[int]] = []
     m_element = []
     if isinstance(num_rows, int) and isinstance(num_cols, int):
-        for i in range(num_rows):
+        while len(matrix) != num_rows:
             while len(m_element) != num_cols:
                 m_element.append(0)
             matrix.append(m_element)
             m_element = []
     return matrix
-
+generate_edit_matrix(6,7)
 
 def initialize_edit_matrix(edit_matrix: tuple, add_weight: int, remove_weight: int) -> list:
     if edit_matrix:
         if edit_matrix[0]:
             if isinstance(add_weight, int) and isinstance(remove_weight, int):
-                for i in range(len(edit_matrix)):
-                    edit_matrix[0][0] = 0
+                for i in range(1, len(edit_matrix)):
                     edit_matrix[i][0] = edit_matrix[i - 1][0] + remove_weight
-                for j in range(len(edit_matrix[0])):
-                    edit_matrix[0][0] = 0
+                for j in range(1, len(edit_matrix[0])):
                     edit_matrix[0][j] = edit_matrix[0][j - 1] + add_weight
     return list(edit_matrix)
 
@@ -39,15 +37,17 @@ def fill_edit_matrix(edit_matrix: tuple,
                      substitute_weight: int,
                      original_word: str,
                      target_word: str) -> list:
-    if edit_matrix and edit_matrix[0] and isinstance(add_weight, int) and isinstance(remove_weight, int) and isinstance(
-            substitute_weight, int) and isinstance(original_word, str) and isinstance(target_word, str):
-        for i in range(1, len(edit_matrix)):
-            for j in range(1, len(edit_matrix[0])):
-                edit_matrix[i][j] = minimum_value((edit_matrix[i - 1][j] + remove_weight,
-                                                   edit_matrix[i][j - 1] + add_weight,
-                                                   edit_matrix[i - 1][j - 1] + (
-                                                       substitute_weight if original_word[i - 1] != target_word[j - 1]
-                                                       else 0)))
+    if edit_matrix and edit_matrix[0]:
+        if isinstance(add_weight, int) and isinstance(remove_weight, int) and isinstance(
+                substitute_weight, int) and isinstance(original_word, str) and isinstance(target_word, str):
+            for i in range(1, len(edit_matrix)):
+                for j in range(1, len(edit_matrix[0])):
+                    edit_matrix[i][j] = minimum_value((edit_matrix[i - 1][j] + remove_weight,
+                                                       edit_matrix[i][j - 1] + add_weight,
+                                                       edit_matrix[i - 1][j - 1] + (
+                                                           substitute_weight if original_word[i - 1] != target_word[
+                                                               j - 1]
+                                                           else 0)))
     return list(edit_matrix)
 
 
@@ -57,8 +57,7 @@ def find_distance(original_word: str,
                   remove_weight: int,
                   substitute_weight: int) -> int:
     if isinstance(original_word, str) and isinstance(target_word, str) and isinstance(add_weight, int) and isinstance(
-            remove_weight, int) and isinstance(
-            substitute_weight, int):
+            remove_weight, int) and isinstance(substitute_weight, int):
         num_rows = len(original_word) + 1
         num_cols = len(target_word) + 1
         matrix = fill_edit_matrix(tuple(initialize_edit_matrix(tuple(generate_edit_matrix(num_rows, num_cols)),
@@ -94,6 +93,3 @@ def load_from_csv(path_to_file: str) -> list:
         row = []
     file_csv.close()
     return matrix
-
-
-
