@@ -108,27 +108,27 @@ def describe_edits(edit_matrix: tuple,
         k, n = 0, 0
         count_operations = 0
         while count_operations != edit_matrix[-1][-1]:
-            r, ins, s = edit_matrix[i - 1][j] + remove_weight, edit_matrix[i][j - 1] + add_weight, edit_matrix[i - 1][
-            j - 1] + (substitute_weight if original_word[k] != target_word[n]
+            remove, insert, substitute = edit_matrix[i - 1][j] + remove_weight, edit_matrix[i][j - 1] + add_weight,
+                                         edit_matrix[i - 1][j - 1] + (substitute_weight if original_word[k] != target_word[n]
                       else 0)
             print('\n')
-            print(r, ins, s)
+            print(remove, insert, substitute)
             print(i, j, k, n, original_word[k], target_word[n])
-            if r == min(r, ins, s) and original_word[k] not in target_word:
+            if remove == min(remove, insert, substitute) and original_word[k] not in target_word:
                 d = "remove " + original_word[k]
                 i += 1
                 k += 1
-            elif s == min(r, ins, s) and original_word[k] in target_word and original_word[k] != target_word[n]:
+            elif substitute == min(remove, insert, substitute) and original_word[k] in target_word and original_word[k] != target_word[n]:
                 d = "substitute " + original_word[k] + " with " + target_word[n]
                 k += 1
                 n += 1
                 i += 1
                 j += 1
-            elif s == min(r, ins, s) and original_word[k] == target_word[n]:
+            elif substitute == min(remove, insert, substitute) and original_word[k] == target_word[n]:
                 d = ''
                 j += 1
                 n += 1
-            elif ins == min(r, ins, s) and ins != r or original_word[k] in target_word:
+            elif insert == min(remove, insert, substitute) and insert != remove or original_word[k] in target_word:
                 d = "insert " + target_word[n]
                 if k < len(original_word)-1 and n < len(target_word)-1:
                     i += 1
