@@ -53,8 +53,6 @@ def fill_edit_matrix(edit_matrix: tuple,
                     else:
                         for_sub = matrix1[i - 1][j - 1] + substitute_weight
                     matrix1[i][j] = minimum_value((for_add, for_remove, for_sub))
-
-    print(matrix1)
     return list(matrix1)
 
 
