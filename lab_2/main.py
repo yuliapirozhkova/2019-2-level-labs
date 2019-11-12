@@ -111,9 +111,6 @@ def describe_edits(edit_matrix: tuple,
             remove, insert, substitute = edit_matrix[i - 1][j] + remove_weight, edit_matrix[i][j - 1] + add_weight, \
                                          edit_matrix[i - 1][j - 1] + (substitute_weight if
                                                                       original_word[k] != target_word[n] else 0)
-            print('\n')
-            print(remove, insert, substitute)
-            print(i, j, k, n, original_word[k], target_word[n])
             if remove == min(remove, insert, substitute) and original_word[k] not in target_word:
                 desc = "remove " + original_word[k]
                 i += 1
@@ -144,8 +141,6 @@ def describe_edits(edit_matrix: tuple,
                     if k < len(original_word)-1:
                         k += 1
             count_operations += 1
-            print(count_operations)
-            print(desc, i, j, k, n, original_word[k], target_word[n])
             if desc != '':
                 description.append(desc)
     return description
