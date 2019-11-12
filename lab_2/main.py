@@ -89,10 +89,9 @@ def save_to_csv(edit_matrix: tuple, path_to_file: str) -> None:
 
 
 def load_from_csv(path_to_file: str) -> list:
-    if isinstance(path_to_file, str):
-        with open(path_to_file) as file:
-            first_matrix = []
-            var = file.read().split('\n')[:-1]
-            for row in var:
-                first_matrix.append(row.split(','))
-        return first_matrix
+    with open(path_to_file) as file:
+        first_matrix = []
+        var = file.read().split('\n')[:-1]
+        for row in var:
+            first_matrix.append(row.split(','))
+    return first_matrix
