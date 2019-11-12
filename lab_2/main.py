@@ -14,7 +14,7 @@ def generate_edit_matrix(num_rows: int, num_cols: int) -> list:
             matrix.append(m_element)
             m_element = []
     return matrix
-generate_edit_matrix(6,7)
+
 
 def initialize_edit_matrix(edit_matrix: tuple, add_weight: int, remove_weight: int) -> list:
     if edit_matrix:
