@@ -126,13 +126,13 @@ def describe_edits(edit_matrix: tuple, original_word: str, target_word: str, add
                 edits.append('insert ' + target_word[col])
                 col += 1
         elif var_1 > var_2:
-            edits.append([])
             edits.append('insert ' + target_word[col])
+            edits.append([])
             col += var_1 + 1
             row += var_1
         else:
-            edits.append([])
             edits.append('remove ' + original_word[row])
+            edits.append([])
             row += var_2 + 1
             col += var_2
     edits_with_sub = []
