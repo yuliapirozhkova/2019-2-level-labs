@@ -6,7 +6,7 @@ Labour work #2. Levenshtein distance.
 def generate_edit_matrix(num_rows: int, num_cols: int) -> list:
     edit_matrix = []
     if isinstance(num_rows, int) and isinstance(num_cols, int):
-        for i in range(num_rows):
+        for _ in range(num_rows):
             edit_matrix.append([0] * num_cols)
     return edit_matrix
 
@@ -48,12 +48,12 @@ def fill_edit_matrix(edit_matrix: tuple,
     target_word = ' ' + target_word
     for i in range(1, len(edit_matrix)):
         for j in range(1, len(edit_matrix[0])):
-            a = edit_matrix[i - 1][j] + remove_weight
-            b = edit_matrix[i][j - 1] + add_weight
-            c = edit_matrix[i - 1][j - 1]
+            first_var = edit_matrix[i - 1][j] + remove_weight
+            second_var = edit_matrix[i][j - 1] + add_weight
+            third_var = edit_matrix[i - 1][j - 1]
             if original_word[i] != target_word[j]:
-                c += substitute_weight
-            edit_matrix[i][j] = minimum_value((a, b, c))
+                third_var += substitute_weight
+            edit_matrix[i][j] = minimum_value((first_var, second_var, third_var))
     return edit_matrix
 
 
@@ -77,35 +77,34 @@ def find_distance(original_word: str,
 def save_to_csv(edit_matrix: list, path_to_file: str) -> None:
     if not isinstance(edit_matrix, list) or not isinstance(path_to_file, str):
         return None
-    with open(path_to_file, "w") as f:
-        for m, el in enumerate(edit_matrix):
-            for n, i in enumerate(el):
-                f.write(str(i))
-                if n != len(el) - 1:
-                    f.write(',')
-            if m != len(edit_matrix) - 1:
-                f.write('\n')
+    with open(path_to_file, "w") as file:
+        for row in edit_matrix:
+            for element in row:
+                file.write(str(element))
+                if edit_matrix[0].index(element) != len(element) - 1:
+                    file.write(',')
+            if edit_matrix.index(row) != len(edit_matrix) - 1:
+                file.write('\n')
 
 
 def load_from_csv(path_to_file: str) -> list:
     if not isinstance(path_to_file, str):
         return []
-    with open(path_to_file) as f:
-        matrix_from_file = f.readlines()
+    with open(path_to_file) as file:
+        matrix_from_file = file.readlines()
         matrix = []
-        for el in matrix_from_file:
-            el = el.replace('\n', '')
-            to_add = el.split(',')
+        for element in matrix_from_file:
+            element = element.replace('\n', '')
+            to_add = element.split(',')
             matrix.append(to_add)
     return matrix
 
 
-def search_for_path(matrix: list, ind_1: int, ind_2: int, n=0) -> int:
-    if ind_1 >= len(matrix) - 1 or ind_2 >= len(matrix[0]) - 1:
-        return n
-    if matrix[ind_1][ind_2] == matrix[ind_1 + 1][ind_2 + 1]:
-        n = search_for_path(matrix, ind_1 + 1, ind_2 + 1, n + 1)
-    return n
+def search_for_path(matrix: list, ind_1: int, ind_2: int, number=0) -> int:
+    if not(ind_1 >= len(matrix) - 1 or ind_2 >= len(matrix[0]) - 1) and \
+            matrix[ind_1][ind_2] == matrix[ind_1 + 1][ind_2 + 1]:
+        number = search_for_path(matrix, ind_1 + 1, ind_2 + 1, number + 1)
+    return number
 
 
 def describe_edits(edit_matrix: tuple, original_word: str, target_word: str, add_weight: int, remove_weight: int,
