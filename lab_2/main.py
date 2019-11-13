@@ -75,16 +75,15 @@ def find_distance(original_word: str,
 
 
 def save_to_csv(edit_matrix: list, path_to_file: str) -> None:
-    if not isinstance(edit_matrix, list) or not isinstance(path_to_file, str):
-        return None
-    with open(path_to_file, "w") as file:
-        for row in edit_matrix:
-            for element in row:
-                file.write(str(element))
-                if edit_matrix[0].index(element) != len(element) - 1:
-                    file.write(',')
-            if edit_matrix.index(row) != len(edit_matrix) - 1:
-                file.write('\n')
+    if isinstance(edit_matrix, list) and isinstance(path_to_file, str):
+        with open(path_to_file, "w") as file:
+            for row in edit_matrix:
+                for element in row:
+                    file.write(str(element))
+                    if edit_matrix[0].index(element) != len(element) - 1:
+                        file.write(',')
+                if edit_matrix.index(row) != len(edit_matrix) - 1:
+                    file.write('\n')
 
 
 def load_from_csv(path_to_file: str) -> list:
@@ -136,12 +135,12 @@ def describe_edits(edit_matrix: tuple, original_word: str, target_word: str, add
             col += var_2
     edits_with_sub = []
     flag = 1
-    for i in range(len(edits)):
-        if i != len(edits) - 1 and 'remove' in edits[i] and 'insert' in edits[i + 1]:
-            edits_with_sub.append('substitute {} with {}'.format(edits[i][-1], edits[i + 1][-1]))
+    for ind, edit in enumerate(edits):
+        if ind != len(edits) - 1 and 'remove' in edit and 'insert' in edits[ind + 1]:
+            edits_with_sub.append('substitute {} with {}'.format(edit[-1], edits[ind + 1][-1]))
             flag = 0
         elif not flag:
             flag = 1
-        elif edits[i]:
-            edits_with_sub.append(edits[i])
+        elif edit:
+            edits_with_sub.append(edit)
     return edits_with_sub
