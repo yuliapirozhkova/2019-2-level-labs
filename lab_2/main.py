@@ -113,7 +113,7 @@ def describe_edits(edit_matrix: tuple, original_word: str, target_word: str, add
     distance = find_distance(original_word, target_word, add_weight, remove_weight, substitute_weight)
     row = 0
     col = 0
-    for i in range(distance):
+    for _ in range(distance):
         var_1 = search_for_path(edit_matrix, row, col + 1)
         var_2 = search_for_path(edit_matrix, row + 1, col)
         if var_1 == var_2:
@@ -133,14 +133,20 @@ def describe_edits(edit_matrix: tuple, original_word: str, target_word: str, add
             edits.append([])
             row += var_2 + 1
             col += var_2
-    edits_with_sub = []
-    flag = 1
-    for ind, edit in enumerate(edits):
-        if ind != len(edits) - 1 and 'remove' in edit and 'insert' in edits[ind + 1]:
-            edits_with_sub.append('substitute {} with {}'.format(edit[-1], edits[ind + 1][-1]))
-            flag = 0
-        elif not flag:
-            flag = 1
-        elif edit:
-            edits_with_sub.append(edit)
-    return edits_with_sub
+    return edits
+
+
+def create_edits_with_subs(edits: tuple) -> list:
+    if isinstance(edits, tuple):
+        edits_with_subs = []
+        flag = 1
+        for ind, edit in enumerate(edits):
+            if ind != len(edits) - 1 and 'remove' in edit and 'insert' in edits[ind + 1]:
+                edits_with_sub.append('substitute {} with {}'.format(edit[-1], edits[ind + 1][-1]))
+                flag = 0
+            elif not flag:
+                flag = 1
+            elif edit:
+                edits_with_sub.append(edit)
+    return edits_with_subs     
+
