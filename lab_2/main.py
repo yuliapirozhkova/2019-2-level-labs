@@ -137,16 +137,15 @@ def describe_edits(edit_matrix: tuple, original_word: str, target_word: str, add
 
 
 def create_edits_with_subs(edits: tuple) -> list:
+    edits_with_subs = []
     if isinstance(edits, tuple):
-        edits_with_subs = []
         flag = 1
         for ind, edit in enumerate(edits):
             if ind != len(edits) - 1 and 'remove' in edit and 'insert' in edits[ind + 1]:
-                edits_with_sub.append('substitute {} with {}'.format(edit[-1], edits[ind + 1][-1]))
+                edits_with_subs.append('substitute {} with {}'.format(edit[-1], edits[ind + 1][-1]))
                 flag = 0
             elif not flag:
                 flag = 1
             elif edit:
-                edits_with_sub.append(edit)
-    return edits_with_subs     
-
+                edits_with_subs.append(edit)
+    return edits_with_subs
