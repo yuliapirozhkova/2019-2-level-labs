@@ -85,6 +85,7 @@ def save_to_csv(edit_matrix: list, path_to_file: str) -> None:
                     file.write(',')
             if edit_matrix.index(row) != len(edit_matrix) - 1:
                 file.write('\n')
+    return None
 
 
 def load_from_csv(path_to_file: str) -> list:
