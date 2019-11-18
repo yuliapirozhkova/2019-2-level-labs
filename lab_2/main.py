@@ -75,15 +75,16 @@ def find_distance(original_word: str,
 
 
 def save_to_csv(edit_matrix: list, path_to_file: str) -> None:
-    if isinstance(edit_matrix, list) and isinstance(path_to_file, str):
-        with open(path_to_file, "w") as file:
-            for row in edit_matrix:
-                for element in row:
-                    file.write(str(element))
-                    if edit_matrix[0].index(element) != len(element) - 1:
-                        file.write(',')
-                if edit_matrix.index(row) != len(edit_matrix) - 1:
-                    file.write('\n')
+    if not isinstance(edit_matrix, list) or not isinstance(path_to_file, str):
+        return None
+    with open(path_to_file, "w") as file:
+        for row in edit_matrix:
+            for element in row:
+                file.write(str(element))
+                if row.index(element) != len(row) - 1:
+                    file.write(',')
+            if edit_matrix.index(row) != len(edit_matrix) - 1:
+                file.write('\n')
 
 
 def load_from_csv(path_to_file: str) -> list:
@@ -94,7 +95,8 @@ def load_from_csv(path_to_file: str) -> list:
         matrix = []
         for element in matrix_from_file:
             element = element.replace('\n', '')
-            to_add = element.split(',')
+            numbers = element.split(',')
+            to_add = list(map(int, numbers))
             matrix.append(to_add)
     return matrix
 
