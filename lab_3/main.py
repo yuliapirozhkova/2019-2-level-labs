@@ -23,6 +23,13 @@ class WordStorage:
             return id_word
         return -1
 
+    def get_id_of(self, word: str) -> int:
+
+        if word in self.storage and isinstance(word, str):
+            id_word = self.storage.get(word)
+            return id_word
+        return -1
+
     def get_original_by(self, id_number: int) -> str:
 
         if id_number in self.storage.values():
