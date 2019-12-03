@@ -87,7 +87,6 @@ class NGramTrie:
     def predict_next_sentence(self, prefix: tuple) -> list:
 
         next_sentence = []
-        key_prob = 0
         list_prob_keys = []
         list_prob_values = []
         if prefix is not None and isinstance(prefix, tuple) and len(prefix) == self.size - 1:
@@ -119,7 +118,6 @@ def encode(storage_instance, corpus) -> list:
 def split_by_sentence(text: str) -> list:
     corpus = []
     new_text = ''
-    new_line = ''
     sentences = []
     if text is not None:
         if isinstance(text, str) and text != '' and ' ' in text:
@@ -143,4 +141,3 @@ def split_by_sentence(text: str) -> list:
                 element.append('</s>')
                 corpus.append(element)
     return corpus
-
