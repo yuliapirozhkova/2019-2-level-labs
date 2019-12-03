@@ -39,12 +39,11 @@ class WordStorage:
 
     def from_corpus(self, corpus: tuple):
 
-        if isinstance(corpus, tuple):
-            corpus = list(set(corpus))
-            list_values = []
+        if corpus and isinstance(corpus, tuple):
+            corpus = set(corpus)
             for element in corpus:
-                list_values.append(hash(element))
-            self.storage = {key: value for key, value in zip(corpus, list_values)}
+                id_element = hash(element)
+                self.storage[element] = id_element
         return self.storage
 
 
@@ -65,7 +64,6 @@ class NGramTrie:
                 for i in range(len(sentence) + 1 - self.size):
                     n_tuple = tuple(sentence[i:i + self.size])
                     n_sentence.append(n_tuple)
-                    # print(tuple(n_sentence))
                 self.gram_frequencies = {element: n_sentence.count(element) for element in tuple(n_sentence)}
                 filling = 'OK'
             except AssertionError:
@@ -78,16 +76,11 @@ class NGramTrie:
         for element in self.gram_frequencies:
             first_word = element[:-1]
             count = 0
-            # print(first_word)
             for key in list(self.gram_frequencies.keys()):
                 if first_word == key[:-1]:
-                    # print(key[:-1])
                     count += self.gram_frequencies[key]
-                    # print(count)
             prob = math.log(self.gram_frequencies[element] / count)
-            # print(prob)
             list_prob.append(prob)
-            # print(list_prob)
         self.gram_log_probabilities = {element: prob for element, prob in zip(self.gram_frequencies.keys(), list_prob)}
         return self.gram_log_probabilities
 
@@ -102,22 +95,15 @@ class NGramTrie:
             for i in self.gram_log_probabilities:
                 if prefix[-1] not in next_sentence:
                     next_sentence.append(prefix[-1])
-                    # print(next_sentence)
-                # print("\n")
-                # print("/", element)
                 for key in list(self.gram_log_probabilities.keys()):
-                    # print('||', key)
-                    # print('*', prefix, key[:-1])
                     if prefix == key[:-1]:
                         list_prob_keys.append(key)
                         list_prob_values.append(self.gram_log_probabilities[key])
-                        # print(list_prob_keys, list_prob_values)
                 if list_prob_keys != [] and list_prob_values != []:
                     key_prob = max(list_prob_values)
                     prefix = list_prob_keys[list_prob_values.index(key_prob)][1:]
                     list_prob_keys = []
                     list_prob_values = []
-                # print(prefix, key_prob, next_sentence, list_prob_keys, list_prob_values)
         return next_sentence
 
 
@@ -125,20 +111,21 @@ def encode(storage_instance, corpus) -> list:
     for sentence in corpus:
         for word in sentence:
             for key, value in storage_instance.items():
-                # print(word, key, value)
                 if word == key:
                     sentence[sentence.index(word)] = value
-                # print(word)
     return corpus
 
 
 def split_by_sentence(text: str) -> list:
     corpus = []
     new_text = ''
+    new_line = ''
+    sentences = []
     if text is not None:
         if isinstance(text, str) and text != '' and ' ' in text:
             if '\n' in text:
-                text = text.replace('\n', '')
+                text = text.replace('\n', ' ')
+                text = text.replace('   ', ' ')
                 text = text.replace('  ', ' ')
             for symbol in text:
                 p_symbol = text[text.index(symbol) - 2]
@@ -156,3 +143,4 @@ def split_by_sentence(text: str) -> list:
                 element.append('</s>')
                 corpus.append(element)
     return corpus
+
