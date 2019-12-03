@@ -1,8 +1,6 @@
 """
 Labour work #2. Levenshtein distance.
 """
-from typing import List
-
 
 def generate_edit_matrix(num_rows: int, num_cols: int) -> list:
     edit_matrix = []
