@@ -91,7 +91,7 @@ class NGramTrie:
         list_prob_values = []
         if prefix is not None and isinstance(prefix, tuple) and len(prefix) == self.size - 1:
             next_sentence.extend(list(prefix[:self.size - 1]))
-            for i in self.gram_log_probabilities:
+            for _ in self.gram_log_probabilities:
                 if prefix[-1] not in next_sentence:
                     next_sentence.append(prefix[-1])
                 for key in list(self.gram_log_probabilities.keys()):
