@@ -54,7 +54,7 @@ class NGramTrie:
         self.gram_frequencies = {}
         self.gram_log_probabilities = {}
 
-    def fill_from_sentence(self, sentence: tuple):
+    def fill_from_sentence(self, sentence: tuple) -> str:
 
         if sentence is not None and isinstance(sentence, tuple):
             for i in range(len(sentence) - self.size + 1):
