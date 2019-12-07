@@ -54,34 +54,30 @@ class NGramTrie:
         self.gram_frequencies = {}
         self.gram_log_probabilities = {}
 
-    def fill_from_sentence(self, sentence: tuple) -> str:
+    def fill_from_sentence(self, sentence: tuple):
 
-        filling = ''
         if sentence is not None and isinstance(sentence, tuple):
-            try:
-                sentence = list(sentence)
-                n_sentence = []
-                for i in range(len(sentence) + 1 - self.size):
-                    n_tuple = tuple(sentence[i:i + self.size])
-                    n_sentence.append(n_tuple)
-                self.gram_frequencies = {element: n_sentence.count(element) for element in tuple(n_sentence)}
-                filling = 'OK'
-            except AssertionError:
-                filling = 'ERROR'
-        return filling
+            for i in range(len(sentence) - self.size + 1):
+                n_list = [sentence[i + j] for j in range(self.size)]
+                n_tuple = tuple(n_list)
+                if n_tuple in self.gram_frequencies.keys():
+                    self.gram_frequencies[n_tuple] += 1
+                else:
+                    self.gram_frequencies[n_tuple] = 1
+            return self.gram_frequencies
+        return []
 
     def calculate_log_probabilities(self):
-
-        list_prob = []
-        for element in self.gram_frequencies:
-            first_word = element[:-1]
-            count = 0
-            for key in list(self.gram_frequencies.keys()):
-                if first_word == key[:-1]:
-                    count += self.gram_frequencies[key]
-            prob = math.log(self.gram_frequencies[element] / count)
-            list_prob.append(prob)
-        self.gram_log_probabilities = {element: prob for element, prob in zip(self.gram_frequencies.keys(), list_prob)}
+        prob_dict = {}
+        for key, value in self.gram_frequencies.items():
+            if key[:self.size - 1] not in prob_dict:
+                prob_dict[key[:self.size - 1]] = value
+            else:
+                prob_dict[key[:self.size - 1]] += value
+        for key, value in self.gram_frequencies.items():
+            if key not in self.gram_log_probabilities:
+                probability = value / prob_dict[key[:self.size - 1]]
+                self.gram_log_probabilities[key] = math.log(probability)
         return self.gram_log_probabilities
 
     def predict_next_sentence(self, prefix: tuple) -> list:
@@ -118,26 +114,22 @@ def encode(storage_instance, corpus) -> list:
 def split_by_sentence(text: str) -> list:
     corpus = []
     new_text = ''
-    sentences = []
-    if text is not None:
-        if isinstance(text, str) and text != '' and ' ' in text:
-            if '\n' in text:
-                text = text.replace('\n', ' ')
-                text = text.replace('   ', ' ')
-                text = text.replace('  ', ' ')
+    if isinstance(text, str) and ' ' in text:
+        text = text.replace('\n', ' ')
+        while '  ' in text:
+            text = text.replace('  ', ' ')
+        text = text.replace('!', '.')
+        text = text.replace('?', '.')
+        if '.' in text:
             for symbol in text:
-                p_symbol = text[text.index(symbol) - 2]
-                p_symbol_list = ['.', '!', '?']
-                if symbol.isalpha() or symbol == ' ':
-                    if symbol.isupper() and p_symbol in p_symbol_list:
-                        symbol = '*' + symbol
+                if symbol.isalpha() or symbol == ' ' or symbol == '.':
                     new_text += symbol.lower()
-                sentences = new_text.split('*')
-            while '' in sentences:
-                sentences.remove('')
-            for element in sentences:
-                element = element.split()
-                element.insert(0, '<s>')
-                element.append('</s>')
-                corpus.append(element)
+    sentences = new_text.split('.')
+    while '' in sentences:
+        sentences.remove('')
+    for element in sentences:
+        element = element.split()
+        element.insert(0, '<s>')
+        element.append('</s>')
+        corpus.append(element)
     return corpus
