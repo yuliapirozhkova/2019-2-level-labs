@@ -37,12 +37,12 @@ class WordStorage:
             return 'UNK'
 
     def from_corpus(self, corpus: tuple):
-    #    if isinstance(corpus, tuple):
-        for word in corpus:
-            self.put(word)
-        return self.storage
-   # else:
-    #    return {}
+        if isinstance(corpus, tuple):
+            for word in corpus:
+                self.put(word)
+            return self.storage
+        else:
+            return {}
 
 
 class NGramTrie:
@@ -105,6 +105,7 @@ class NGramTrie:
             prefix = tuple(pref_1)
         return final
 
+
 def encode(storage_instance, corpus) -> list:
     coded = []
     for l in corpus:
@@ -119,7 +120,7 @@ def encode(storage_instance, corpus) -> list:
 def split_by_sentence(text: str) -> list:
     if isinstance(text, str) and text is not '' and len(text) > 1 and len(text.split(' ')) > 1 and text is not None:
         new_text = ''
-        text = text.replace('\n', ' ')
+        text = text.replace('\n', '')
         text = text.replace('  ', ' ')
         text = text.replace('!', '.')
         text = text.replace('?', '.')
@@ -133,8 +134,6 @@ def split_by_sentence(text: str) -> list:
                     symbol = 'sep'+symbol
                 new_text += symbol.lower()
             sentences_1 = new_text.split('sep')
-       # while '' in sentences_1:
-        #    sentences_1.remove('')
         for i in sentences_1:
             i = i.split()
             i.insert(0, '<s>')
@@ -144,36 +143,22 @@ def split_by_sentence(text: str) -> list:
     return []
 
 
-# WSt = WordStorage()
-# NGr = NGramTrie(2)
-# sentences = split_by_sentence((''' Web Authentication
-# Login Successful !
-# You can now use all regular network services over the wireless network.
-#
-# Please retain this small logout window in order to logoff when done. Note that you can always use the following URL to retrieve this page:
-# https://192.0.2.1/logout.html'''))
-# for sent in sentences:
-#     WSt.from_corpus(sent)
-# sentences1 = encode(WSt, sentences)
-# for sent in sentences1:
-#     NGr.fill_from_sentence(tuple(sent))
-# NGr.calculate_log_probabilities()
-# prefix1 = 'use'
-# pref_lst = prefix1.split()
-# pref_num = []
-# for pref in pref_lst:
-#     pref_num.append(WSt.get_id_of(pref))
-# numbers_res = NGr.predict_next_sentence(tuple(pref_num,))
-# fin = []
-# for number in numbers_res:
-#     fin.append(WSt.get_original_by(number))
-# print(fin)
-
-
-
-
-
-
-
-
-
+WSt = WordStorage()
+NGr = NGramTrie(2)
+sentences = split_by_sentence(REFERENCE_TEXT)
+for sent in sentences:
+    WSt.from_corpus(sent)
+sentences1 = encode(WSt, sentences)
+for sent in sentences1:
+    NGr.fill_from_sentence(tuple(sent))
+NGr.calculate_log_probabilities()
+prefix1 = 'she'
+pref_lst = prefix1.split()
+pref_num = []
+for prefF in pref_lst:
+    pref_num.append(WSt.get_id_of(prefF))
+numbers_res = NGr.predict_next_sentence(tuple(pref_num,))
+fin = []
+for number in numbers_res:
+    fin.append(WSt.get_original_by(number))
+print(fin)
