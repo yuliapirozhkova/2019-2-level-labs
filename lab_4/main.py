@@ -1,28 +1,96 @@
-import math
+from math import log
 
 
 REFERENCE_TEXTS = []
 
 
 def clean_tokenize_corpus(texts: list) -> list:
-    pass
+    corpus = []
+    try:
+        for one_text in texts:
+            if not isinstance(one_text, str):
+                continue
+            one_text = one_text.lower()
+            one_text = one_text.replace('\n', ' ')
+            one_text = one_text.replace('<br />', ' ')
+            for sign in one_text:
+                if not sign.isalpha() and sign != ' ':
+                    one_text = one_text.replace(sign, '')
+            corpus.append(one_text.split())
+        return corpus
+    except TypeError:
+        return []
 
 
 class TfIdfCalculator:
     def __init__(self, corpus):
-        pass
+        self.corpus = corpus
+        self.tf_values = []
+        self.idf_values = {}
+        self.tf_idf_values = []
+        self.file_names = ['5_7.txt', '15_2.txt', '10547_3.txt', '12230_7.txt']
 
     def calculate_tf(self):
-        pass
+        try:
+            for part in self.corpus:
+                if not isinstance(part, list):
+                    continue
+                dict_for_part = {}
+                new_part = []
+                for el in part:
+                    if isinstance(el, str):
+                        new_part.append(el)
+                for word in new_part:
+                    if word not in dict_for_part:
+                        dict_for_part[word] = part.count(word) / len(new_part)
+                if dict_for_part:
+                    self.tf_values.append(dict_for_part)
+        except TypeError:
+            return []
 
     def calculate_idf(self):
-        pass
+        try:
+            length_corp = len(self.corpus)
+            for element in self.corpus:
+                if not isinstance(element, list):
+                    length_corp -= 1
+            for text_1 in self.corpus:
+                if not isinstance(text_1, list):
+                    continue
+                for word in text_1:
+                    if not isinstance(word, str):
+                        continue
+                    if word in self.idf_values:
+                        continue
+                    counter = 0
+                    for element in self.corpus:
+                        if not isinstance(element, list):
+                            continue
+                        if word in element:
+                            counter += 1
+                    self.idf_values[word] = log(length_corp / counter)
+        except TypeError:
+            return {}
 
     def calculate(self):
-        pass
+        try:
+            for el in self.tf_values:
+                temp_dict = {}
+                for word, value in el.items():
+                    temp_dict[word] = value * self.idf_values[word]
+                self.tf_idf_values.append(temp_dict)
+        except(KeyError, TypeError):
+            return []
 
     def report_on(self, word, document_index):
-        pass
+        try:
+            tf_idf = self.tf_idf_values[document_index][word]
+            sort = sorted(self.tf_idf_values[document_index],
+                          key=lambda x: (self.tf_idf_values[document_index][x]), reverse=True)
+            position = sort.index(word)
+            return tuple((tf_idf, position))
+        except (IndexError, TypeError):
+            return ()
 
 
 if __name__ == '__main__':
