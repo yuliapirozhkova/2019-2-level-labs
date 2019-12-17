@@ -74,9 +74,9 @@ class TfIdfCalculator:
 
     def calculate(self):
         try:
-            for el in self.tf_values:
+            for element in self.tf_values:
                 temp_dict = {}
-                for word, value in el.items():
+                for word, value in element.items():
                     temp_dict[word] = value * self.idf_values[word]
                 self.tf_idf_values.append(temp_dict)
         except(KeyError, TypeError):
@@ -84,11 +84,11 @@ class TfIdfCalculator:
 
     def report_on(self, word, document_index):
         try:
-            tf_idf = self.tf_idf_values[document_index][word]
+            tf_idf_1 = self.tf_idf_values[document_index][word]
             sort = sorted(self.tf_idf_values[document_index],
                           key=lambda x: (self.tf_idf_values[document_index][x]), reverse=True)
             position = sort.index(word)
-            return tuple((tf_idf, position))
+            return tuple((tf_idf_1, position))
         except (IndexError, TypeError):
             return ()
 
