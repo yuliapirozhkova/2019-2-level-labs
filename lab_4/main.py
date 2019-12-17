@@ -37,9 +37,9 @@ class TfIdfCalculator:
                     continue
                 dict_for_part = {}
                 new_part = []
-                for el in part:
-                    if isinstance(el, str):
-                        new_part.append(el)
+                for element in part:
+                    if isinstance(element, str):
+                        new_part.append(element)
                 for word in new_part:
                     if word not in dict_for_part:
                         dict_for_part[word] = part.count(word) / len(new_part)
